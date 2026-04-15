@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mitzii Store | Official Enterprise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;400;700;900&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Mitzii Store | Professional Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -15,224 +15,259 @@
             --accent: #0071e3;
             --text: #f5f5f7;
             --text-dim: #86868b;
-            --glass: rgba(255, 255, 255, 0.02);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Geist', 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            user-select: none;
         }
 
-        /* --- 3. 3D Background Canvas --- */
-        #canvas-container {
+        /* --- 3D Background Canvas --- */
+        #bg-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
         }
 
-        /* --- Minimalist Loader --- */
+        /* --- Custom Loader --- */
         #loader {
             position: fixed; inset: 0; background: #000;
             z-index: 10000; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
-        .load-bar {
-            width: 150px; height: 1px; background: #333;
-            position: relative; overflow: hidden;
+        .loader-ring {
+            width: 40px; height: 40px; border: 2px solid #333;
+            border-top: 2px solid var(--accent); border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        .load-bar::after {
-            content: ''; position: absolute; left: 0; top: 0; height: 100%;
-            width: 50%; background: var(--accent);
-            animation: loading 1.5s infinite ease-in-out;
-        }
-        @keyframes loading {
-            0% { left: -50%; } 100% { left: 100%; }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- Luxury Header --- */
+        /* --- Professional Header --- */
         header {
-            padding: 20px 10%; display: flex; justify-content: space-between;
+            padding: 15px 10%; display: flex; justify-content: space-between;
             align-items: center; position: fixed; top: 0; width: 100%;
-            z-index: 1000; backdrop-filter: blur(20px);
+            z-index: 1000; backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
-        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -1px; color: #fff; text-decoration: none; }
+        nav a { text-decoration: none; color: var(--text-dim); font-size: 13px; margin-left: 25px; transition: 0.3s; }
+        nav a:hover { color: #fff; }
 
         /* --- Hero Section --- */
         .hero {
-            height: 100vh; display: flex; flex-direction: column;
+            height: 90vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
+            padding: 0 10%;
         }
-        .hero h1 {
-            font-size: clamp(45px, 10vw, 90px); font-weight: 700;
-            letter-spacing: -3px; line-height: 1; margin-bottom: 20px;
-        }
-        .hero p {
-            font-size: 22px; color: var(--text-dim); max-width: 650px;
-            font-weight: 300; letter-spacing: -0.5px;
+        .hero h1 { font-size: clamp(50px, 10vw, 100px); font-weight: 700; letter-spacing: -4px; margin-bottom: 20px; line-height: 0.9; }
+        .hero p { font-size: 22px; color: var(--text-dim); max-weight: 300; margin-bottom: 40px; }
+
+        /* --- Section Styling --- */
+        .section { padding: 80px 10%; }
+        .section-title { font-size: 40px; font-weight: 700; margin-bottom: 40px; text-align: center; letter-spacing: -1px; }
+        
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        /* --- Product Grid --- */
-        .section { padding: 100px 10%; }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
+        /* --- Apple Style Card --- */
         .card {
-            background: var(--glass);
-            border-radius: 30px; padding: 60px 40px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--glass); border-radius: 24px; padding: 40px;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.5s cubic-bezier(0.15, 0, 0.15, 1);
             backdrop-filter: blur(15px); text-align: center;
         }
-        .card:hover {
-            transform: scale(1.02) translateY(-10px);
-            background: rgba(255,255,255,0.05);
-            border-color: var(--accent);
-        }
-        .card h3 { font-size: 26px; margin-bottom: 10px; font-weight: 600; }
-        .price { font-size: 32px; font-weight: 700; margin: 25px 0; display: block; }
+        .card:hover { transform: scale(1.02); background: rgba(255,255,255,0.06); border-color: var(--accent); }
+        .card h3 { font-size: 24px; margin-bottom: 10px; font-weight: 600; }
+        .price { font-size: 28px; font-weight: 700; display: block; margin: 20px 0; color: #fff; }
 
-        .btn {
-            background: var(--text); color: #000;
-            padding: 14px 35px; border-radius: 50px;
-            text-decoration: none; font-size: 14px; font-weight: 600;
-            transition: 0.3s; display: inline-block;
+        .btn-buy {
+            background: var(--accent); color: #fff; padding: 12px 30px;
+            border-radius: 40px; text-decoration: none; font-size: 14px;
+            font-weight: 600; display: inline-block; cursor: pointer; border: none;
         }
-        .btn:hover { background: var(--accent); color: #fff; }
 
-        /* --- Audio Visualizer Hint --- */
-        #music-status {
-            position: fixed; bottom: 30px; right: 30px;
-            font-size: 10px; color: var(--accent);
-            letter-spacing: 2px; text-transform: uppercase;
+        /* --- Contact Modal --- */
+        #contact-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 2000; display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px);
         }
+        .modal-box {
+            background: #111; padding: 40px; border-radius: 30px;
+            text-align: center; width: 90%; max-width: 400px;
+        }
+        .modal-btn {
+            display: block; padding: 15px; margin: 10px 0; border-radius: 15px;
+            text-decoration: none; font-weight: 600; font-size: 16px;
+        }
+        .wa-btn { background: #25d366; color: #000; }
+        .tg-btn { background: #0088cc; color: #fff; }
+
+        footer { padding: 100px 10%; text-align: center; border-top: 1px solid #111; }
+        .dev-badge { color: var(--accent); font-weight: 700; font-size: 18px; text-decoration: none; }
     </style>
 </head>
-<body onclick="playRandomSong()">
+<body onclick="initAudio()">
 
     <div id="loader">
-        <div class="load-bar"></div>
-        <div style="margin-top:20px; font-size:10px; letter-spacing:5px; color: #555;">MITZII STORE</div>
+        <div class="loader-ring"></div>
     </div>
 
-    <div id="canvas-container"></div>
+    <canvas id="bg-canvas"></canvas>
 
     <header>
-        <div class="logo">Mitzii Store.</div>
-        <div style="font-size: 12px; font-weight: 500; color: var(--text-dim);">Official Partner</div>
+        <a href="#" class="logo">MITZII.</a>
+        <nav>
+            <a href="#vpn">VPN</a>
+            <a href="#bots">BOTS</a>
+            <a href="#panels">PANELS</a>
+            <a href="#developer">DEVELOPER</a>
+        </nav>
     </header>
 
     <section class="hero">
-        <h1>Pure. Professional.</h1>
-        <p>Advanced digital tools and security infrastructure for the modern era.</p>
-        <div id="music-status">Touch to activate audio experience</div>
+        <h1>Mitzii Store.</h1>
+        <p>Premium VPN, Automation Bots, and Infrastructure Panels.</p>
+        <a href="#vpn" class="btn-buy">Browse Collection</a>
     </section>
 
     <div id="vpn" class="section">
+        <h2 class="section-title">Networking.</h2>
         <div class="grid">
-            <div class="card">
-                <i class="fas fa-shield-alt" style="color:var(--accent); font-size:30px; margin-bottom:20px;"></i>
-                <h3>Private VPN</h3>
-                <p style="color:var(--text-dim); font-size:14px;">High-speed secure networking.</p>
-                <span class="price">Rs. 300.00</span>
-                <a href="#" class="btn">Purchase Now</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-robot" style="color:var(--accent); font-size:30px; margin-bottom:20px;"></i>
-                <h3>Bug Bot Elite</h3>
-                <p style="color:var(--text-dim); font-size:14px;">Next-gen automation tools.</p>
-                <span class="price">Rs. 2300.00</span>
-                <a href="#" class="btn">Purchase Now</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-server" style="color:var(--accent); font-size:30px; margin-bottom:20px;"></i>
-                <h3>Unlimited Panel</h3>
-                <p style="color:var(--text-dim); font-size:14px;">Scalable infrastructure panel.</p>
-                <span class="price">Rs. 450.00</span>
-                <a href="#" class="btn">Purchase Now</a>
-            </div>
+            <div class="card"><h3>100GB VPN</h3><span class="price">Rs. 300.00</span><button class="btn-buy" onclick="openContact('100GB VPN', '300')">Buy Now</button></div>
+            <div class="card"><h3>500GB VPN</h3><span class="price">Rs. 800.00</span><button class="btn-buy" onclick="openContact('500GB VPN', '800')">Buy Now</button></div>
+            <div class="card"><h3>Unlimited VPN</h3><span class="price">Rs. 1150.00</span><button class="btn-buy" onclick="openContact('Unlimited VPN', '1150')">Buy Now</button></div>
         </div>
     </div>
 
-    <footer style="padding: 100px; text-align: center; border-top: 1px solid #111;">
-        <p style="color: var(--text-dim); font-size: 13px;">© 2026 Mitzii Store. Managed by Dev Mitzii.</p>
+    <div id="bots" class="section">
+        <h2 class="section-title">Bug Bots.</h2>
+        <div class="grid" id="bot-grid"></div>
+    </div>
+
+    <div id="panels" class="section">
+        <h2 class="section-title">Panels.</h2>
+        <div class="grid" id="panel-grid"></div>
+    </div>
+
+    <div id="developer" class="section" style="text-align: center;">
+        <h2 class="section-title">The Developer.</h2>
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <i class="fas fa-code" style="font-size: 40px; color: var(--accent); margin-bottom: 20px;"></i>
+            <h3>Dev Mitzii</h3>
+            <p style="margin-bottom: 30px;">Official Creator & Lead Architect</p>
+            <a href="https://whatsapp.com/channel/0029Vb7n81K5a249fI8Y4S2j" class="btn-buy" style="background:#fff; color:#000; margin-bottom: 10px; width: 100%;">WhatsApp Channel</a>
+            <a href="https://t.me/devmitziii" class="btn-buy" style="background:#0088cc; width: 100%;">Telegram Channel</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Mitzii Store. All Rights Reserved.</p>
+        <a href="#" class="dev-badge">DEV MITZII</a>
     </footer>
 
-    <script>
-        // --- 1. Audio Logic ---
-        const songs = [
-            "https://files.catbox.moe/6zfgvg.mp3",
-            "https://files.catbox.moe/7onzbx.mp3",
-            "https://files.catbox.moe/jvcjxl.mp3",
-            "https://files.catbox.moe/7itye0.mp3"
-        ];
-        
-        let audio = new Audio();
-        let isPlaying = false;
+    <div id="contact-modal" onclick="closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h2 id="modal-item">Product Name</h2>
+            <p id="modal-price" style="margin-bottom: 20px;">Price</p>
+            <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Choose your platform to buy:</p>
+            <a href="#" id="wa-link" class="modal-btn wa-btn"><i class="fab fa-whatsapp"></i> WhatsApp Inbox</a>
+            <a href="#" id="tg-link" class="modal-btn tg-btn"><i class="fab fa-telegram"></i> Telegram Inbox</a>
+            <button onclick="closeModal()" style="background:none; border:none; color:#555; margin-top:20px; cursor:pointer;">Cancel</button>
+        </div>
+    </div>
 
-        function playRandomSong() {
-            if (!isPlaying) {
-                const randomSong = songs[Math.floor(Math.random() * songs.length)];
-                audio.src = randomSong;
-                audio.play();
-                isPlaying = true;
-                document.getElementById('music-status').innerText = "Audio Active •";
-                gsap.to("#music-status", { opacity: 0.5, repeat: -1, yoyo: true });
+    <script>
+        // --- Data ---
+        const bots = [
+            {n: "Tredic Bug bot", p: "2300"}, {n: "Ovalium Bug bot", p: "2400"},
+            {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"},
+            {n: "Otax Bug bot", p: "2300"}, {n: "Xinso Bug bot", p: "2300"},
+            {n: "Lakiya Crasher", p: "2600"}, {n: "Tredic Bug apk", p: "2800"},
+            {n: "Otax Bug Apk", p: "2800"}
+        ];
+        const panels = [
+            {n: "UNLIMITED PANEL", p: "450"}, {n: "ADMIN PANEL", p: "1400"},
+            {n: "RESELL ACCESS", p: "2600"}, {n: "OWNER PANEL", p: "3600"},
+            {n: "BUG BOT DEPLOY", p: "450"}, {n: "MD BOT DEPLOY", p: "400"}
+        ];
+
+        function fill(data, id) {
+            const container = document.getElementById(id);
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="card">
+                        <h3>${item.n}</h3>
+                        <span class="price">Rs. ${item.p}.00</span>
+                        <button class="btn-buy" onclick="openContact('${item.n}', '${item.p}')">Buy Now</button>
+                    </div>
+                `;
+            });
+        }
+        fill(bots, 'bot-grid');
+        fill(panels, 'panel-grid');
+
+        // --- Buy Logic ---
+        function openContact(item, price) {
+            document.getElementById('modal-item').innerText = item;
+            document.getElementById('modal-price').innerText = "Rs. " + price;
+            
+            const msg = encodeURIComponent(`Hello Dev Mitzii,\nI want to buy: ${item}\nPrice: Rs. ${price}\nPlease provide payment details.`);
+            
+            document.getElementById('wa-link').href = `https://wa.me/message/X45CUX4LO3AQD1?text=${msg}`;
+            document.getElementById('tg-link').href = `https://t.me/CyberMitzii?text=${msg}`;
+            
+            document.getElementById('contact-modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('contact-modal').style.display = 'none'; }
+
+        // --- Audio Logic ---
+        const songs = [
+            "https://files.catbox.moe/6zfgvg.mp3", "https://files.catbox.moe/7onzbx.mp3",
+            "https://files.catbox.moe/jvcjxl.mp3", "https://files.catbox.moe/7itye0.mp3"
+        ];
+        let audio = new Audio();
+        let isStarted = false;
+        function initAudio() {
+            if(!isStarted) {
+                audio.src = songs[Math.floor(Math.random()*songs.length)];
+                audio.play(); isStarted = true;
             }
         }
 
-        // --- 2. 3D Background (Luxury Particles) ---
+        // --- 3D Background ---
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 3000;
-        const posArray = new Float32Array(starCount * 3);
-
-        for(let i=0; i < starCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 10;
-        }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const starMaterial = new THREE.PointsMaterial({ size: 0.005, color: 0x0071e3, transparent: true, opacity: 0.8 });
-        const starMesh = new THREE.Points(starGeometry, starMaterial);
-        scene.add(starMesh);
-
+        const geo = new THREE.BufferGeometry();
+        const count = 2000;
+        const pos = new Float32Array(count * 3);
+        for(let i=0; i<count*3; i++) { pos[i] = (Math.random()-0.5)*10; }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ size: 0.005, color: 0x0071e3 });
+        const points = new THREE.Points(geo, mat);
+        scene.add(points);
         camera.position.z = 2;
 
         function animate() {
             requestAnimationFrame(animate);
-            starMesh.rotation.y += 0.001;
-            starMesh.rotation.x += 0.0005;
+            points.rotation.y += 0.001;
             renderer.render(scene, camera);
         }
         animate();
 
-        // --- 3. Page Transition ---
-        window.onload = () => {
-            setTimeout(() => {
-                gsap.to("#loader", { opacity: 0, duration: 1, onComplete: () => {
-                    document.getElementById('loader').style.display = 'none';
-                    gsap.from(".hero h1", { y: 50, opacity: 0, duration: 1, delay: 0.2 });
-                }});
-            }, 1500);
-        };
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        window.onload = () => { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 500); }, 1500); };
     </script>
 </body>
 </html>
