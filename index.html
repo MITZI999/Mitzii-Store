@@ -3,106 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mitzii Store | Elite Cyber Tools</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>Mitzii Store | Elite Digital Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
     <style>
         :root {
-            --neon-red: #ff0000;
-            --dark-red: #440000;
-            --black: #050505;
-            --glass: rgba(20, 0, 0, 0.8);
+            --bg: #050110;
+            --primary: #8a2be2; /* Deep Violet */
+            --secondary: #00ffff; /* Neon Cyan */
+            --accent-blue: #007bff; /* Electric Blue */
+            --text: #ffffff;
+            --panel-bg: rgba(20, 10, 40, 0.6);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Rajdhani', sans-serif;
-            cursor: crosshair;
+            font-family: 'Exo 2', sans-serif;
+            cursor: none; /* Custom futuristic cursor */
         }
 
         body {
-            background-color: var(--black);
-            color: white;
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            perspective: 1500px;
         }
 
-        /* --- Matrix Background Canvas --- */
-        #matrix {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        /* --- Loading Screen --- */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cyber-loader {
-            width: 150px;
-            height: 150px;
-            border: 3px solid transparent;
-            border-top: 3px solid var(--neon-red);
+        /* --- Custom Futuristic Cursor --- */
+        #custom-cursor {
+            width: 20px; height: 20px;
+            border: 2px solid var(--secondary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: relative;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0 0 15px var(--secondary);
+            transition: transform 0.1s ease;
         }
 
-        .cyber-loader::before {
-            content: "MITZII";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--neon-red);
-            font-family: 'Orbitron';
-            font-weight: bold;
-            letter-spacing: 2px;
-            animation: blink 0.5s infinite;
+        /* --- 3D Holographic Background (Three.js Canvas) --- */
+        #hologram-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+            opacity: 0.6;
         }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* --- Header & Nav --- */
+        /* --- Modern Header with Lightning Menu --- */
         header {
             width: 100%;
             padding: 20px 5%;
-            background: rgba(0,0,0,0.9);
-            border-bottom: 2px solid var(--neon-red);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+            position: sticky; top: 0; z-index: 100;
         }
 
         .logo {
-            font-family: 'Orbitron';
-            font-size: 28px;
-            color: var(--neon-red);
-            text-shadow: 0 0 10px var(--neon-red);
+            font-family: 'Syncopate', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px var(--secondary), 0 0 20px var(--primary);
             text-transform: uppercase;
+        }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a {
+            text-decoration: none;
+            color: #aaa;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        /* Lightning Effect on Hover */
+        nav a:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 5px var(--secondary), 0 0 10px var(--primary);
+        }
+
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 2px;
+            background: var(--secondary);
+            bottom: -5px; left: 0;
+            animation: lightning-strike 0.3s ease-out;
+            box-shadow: 0 0 10px var(--secondary);
+        }
+
+        @keyframes lightning-strike {
+            0% { transform: scaleX(0); opacity: 1; }
+            50% { transform: scaleX(1); opacity: 0.5; }
+            100% { transform: scaleX(1); opacity: 0; }
         }
 
         /* --- Hero Section --- */
         .hero {
-            height: 80vh;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -111,252 +123,256 @@
             padding: 20px;
         }
 
-        .hero h1 {
-            font-family: 'Orbitron';
-            font-size: clamp(3rem, 10vw, 6rem);
-            color: white;
-            text-shadow: 5px 5px var(--neon-red);
-            margin-bottom: 10px;
-            animation: glitch 1s infinite alternate;
+        /* Glitchy Description in Blue */
+        .hero-desc {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(14px, 3vw, 20px);
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            animation: glitch-blue 2s infinite alternate;
+            text-shadow: 0 0 5px var(--accent-blue);
         }
 
-        @keyframes glitch {
+        @keyframes glitch-blue {
             0% { transform: skew(0deg); }
-            20% { transform: skew(-2deg); text-shadow: -2px 0 red, 2px 0 blue; }
-            40% { transform: skew(2deg); }
+            20% { transform: skew(-1deg); text-shadow: -1px 0 red, 1px 0 cyan; }
+            40% { transform: skew(1deg); }
+            60% { text-shadow: -1px 0 cyan, 1px 0 magenta; }
         }
 
-        /* --- Products Grid --- */
-        .container { padding: 50px 5%; }
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: white;
+            text-shadow: 0 0 15px var(--secondary), 0 0 30px var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* --- Floating Product Grid --- */
+        .container { padding: 80px 5%; }
         
         .section-header {
-            font-family: 'Orbitron';
-            color: var(--neon-red);
+            font-family: 'Syncopate', sans-serif;
+            color: var(--secondary);
             font-size: 32px;
             text-align: center;
-            margin-bottom: 40px;
-            border-left: 5px solid var(--neon-red);
-            display: inline-block;
-            padding-left: 15px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--secondary);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
-        /* 3D Glass Card */
+        /* Floating 3D Card */
         .card {
-            background: var(--glass);
-            border: 1px solid var(--dark-red);
+            background: var(--panel-bg);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
-            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            transition: 0.5s;
             transform-style: preserve-3d;
-            perspective: 1000px;
+            animation: float-card 6s ease-in-out infinite;
+        }
+
+        @keyframes float-card {
+            0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+            50% { transform: translateY(-15px) rotateX(2deg) rotateY(-2deg); }
         }
 
         .card:hover {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            border-color: var(--secondary);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            animation-play-state: paused; /* Stop floating on hover */
         }
 
-        .card h3 { font-family: 'Orbitron'; margin: 15px 0; font-size: 20px; }
+        .card i { font-size: 50px; color: var(--secondary); text-shadow: 0 0 15px var(--secondary); margin-bottom: 20px; }
+        .card h3 { font-family: 'Syncopate'; margin-bottom: 10px; color: white; }
         .price { 
-            font-size: 24px; 
+            font-size: 26px; 
             color: #00ff00; 
-            font-weight: bold; 
-            margin-bottom: 20px;
+            font-weight: 700; 
+            margin: 20px 0;
             display: block; 
+            text-shadow: 0 0 10px #00ff00;
         }
 
+        /* Glowing Purchase Button */
         .buy-btn {
-            background: var(--neon-red);
-            color: white;
-            padding: 12px 30px;
+            background: transparent;
+            color: var(--secondary);
+            padding: 15px 35px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
             text-transform: uppercase;
-            display: block;
-            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-            transition: 0.3s;
+            border: 2px solid var(--secondary);
+            display: inline-block;
+            transition: 0.4s;
+            box-shadow: 0 0 10px var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: rgba(0, 255, 255, 0.1);
+            top: 0; left: -100%;
+            transition: 0.4s;
         }
 
         .buy-btn:hover {
-            background: white;
             color: black;
-            transform: scale(1.05);
+            background: var(--secondary);
+            box-shadow: 0 0 30px var(--secondary), 0 0 60px var(--primary);
+            transform: scale(1.1);
         }
+        
+        .buy-btn:hover::after { left: 0; }
 
-        /* --- Contact --- */
-        .contact-section {
-            background: rgba(20, 0, 0, 0.5);
-            padding: 60px 5%;
+        /* --- Footer --- */
+        footer {
             text-align: center;
-            border-top: 1px solid var(--neon-red);
+            padding: 50px;
+            background: #000;
+            border-top: 2px solid var(--primary);
+            color: #777;
         }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .social-link {
-            padding: 15px 30px;
-            border: 1px solid var(--neon-red);
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .social-link:hover { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
 
     </style>
 </head>
 <body>
 
-    <canvas id="matrix"></canvas>
+    <div id="custom-cursor"></div>
 
-    <div id="loader">
-        <div class="cyber-loader"></div>
-        <p style="color: var(--neon-red); margin-top: 20px; letter-spacing: 5px;">HACKING SYSTEM...</p>
-    </div>
+    <canvas id="hologram-canvas"></canvas>
 
     <header>
         <div class="logo">Mitzii Store</div>
+        <nav>
+            <ul>
+                <li><a href="#vpn" class="nav-item">VPN</a></li>
+                <li><a href="#bots" class="nav-item">Bots</a></li>
+                <li><a href="#panels" class="nav-item">Panels</a></li>
+                <li><a href="#contact" class="nav-item">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
     <section class="hero">
-        <h1 id="glitch-text">MITZII STORE</h1>
-        <p style="letter-spacing: 2px;">PREMIUM DIGITAL SERVICES & ELITE CYBER TOOLS</p>
-        <p style="color: var(--neon-red);">OWNER: DEV MITZII</p>
+        <p class="hero-desc">PREMIUM DIGITAL SERVICES & ELITE CYBER TOOLS</p>
+        <h1>MITZII STORE</h1>
+        <p style="color: var(--primary); font-weight: 700;">Curated Business Solutions by Dev Mitzii</p>
+        <p style="color: #666; font-size: 14px; margin-top: 10px;">The unified store for all your digital needs.</p>
     </section>
 
-    <div class="container">
-        <h2 class="section-header">SECURE VPN</h2>
+    <div id="vpn" class="container">
+        <h2 class="section-header">SECURE VPN ACCESS</h2>
         <div class="grid">
-            <div class="card" data-tilt>
-                <i class="fas fa-shield-virus" style="font-size: 40px; color: var(--neon-red);"></i>
+            <div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
+                <i class="fas fa-shield-alt"></i>
                 <h3>100GB VPN</h3>
+                <p style="color:#888;">High-speed secure connection</p>
                 <span class="price">Rs. 300.00</span>
-                <a href="#" onclick="buy('100GB VPN', '300')" class="buy-btn">ACCESS NOW</a>
+                <a href="#" onclick="buy('100GB VPN', '300')" class="buy-btn">PURCHASE</a>
             </div>
-            <div class="card" data-tilt>
-                <i class="fas fa-user-shield" style="font-size: 40px; color: var(--neon-red);"></i>
+            <div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
+                <i class="fas fa-satellite-dish"></i>
                 <h3>500GB VPN</h3>
+                <p style="color:#888;">Premium bandwidth package</p>
                 <span class="price">Rs. 800.00</span>
-                <a href="#" onclick="buy('500GB VPN', '800')" class="buy-btn">ACCESS NOW</a>
+                <a href="#" onclick="buy('500GB VPN', '800')" class="buy-btn">PURCHASE</a>
             </div>
-            <div class="card" data-tilt>
-                <i class="fas fa-infinity" style="font-size: 40px; color: var(--neon-red);"></i>
-                <h3>UNLIMITED VPN</h3>
+            <div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.5" style="border-color:gold;">
+                <i class="fas fa-infinity" style="color:gold;"></i>
+                <h3 style="color:gold;">UNLIMITED VPN</h3>
+                <p style="color:#ccc;">Maximum performance, no limits</p>
                 <span class="price">Rs. 1150.00</span>
-                <a href="#" onclick="buy('Unlimited VPN', '1150')" class="buy-btn">ACCESS NOW</a>
+                <a href="#" onclick="buy('Unlimited VPN', '1150')" class="buy-btn" style="border-color:gold;color:gold;">PURCHASE</a>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <h2 class="section-header">BUG BOTS (ADVANCED)</h2>
-        <div class="grid" id="bot-grid">
-            </div>
-    </div>
-
-    <div class="container">
-        <h2 class="section-header">PTERODACTYL PANELS</h2>
-        <div class="grid" id="panel-grid">
-            </div>
-    </div>
-
-    <section class="contact-section">
-        <h2 class="section-header">COMMUNICATION HUB</h2>
-        <div class="btn-group">
-            <a href="https://wa.me/message/X45CUX4LO3AQD1" class="social-link"><i class="fab fa-whatsapp"></i> WHATSAPP</a>
-            <a href="https://t.me/CyberMitzii" class="social-link"><i class="fab fa-telegram"></i> TELEGRAM</a>
-            <a href="https://whatsapp.com/channel/0029Vb7n81K5a249fI8Y4S2j" class="social-link"><i class="fas fa-broadcast-tower"></i> CHANNEL</a>
+    <section id="contact" class="container" style="text-align: center; background: rgba(10,5,30,0.8);">
+        <h2 class="section-header">GET IN TOUCH</h2>
+        <p>DIRECT SUPPORT FROM DEV MITZII</p>
+        <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+            <a href="https://wa.me/message/X45CUX4LO3AQD1" class="buy-btn" style="border-color:#25d366; color:#25d366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="https://t.me/CyberMitzii" class="buy-btn" style="border-color:#0088cc; color:#0088cc;"><i class="fab fa-telegram"></i> Telegram</a>
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 40px; color: #555;">
+    <footer>
         &copy; 2026 MITZII STORE | SECURE DIGITAL SOLUTIONS
     </footer>
 
+    <audio id="bgSound" loop>
+        <source src="https://www.soundjay.com/ambient/sounds/airport-gate-ambient-1.mp3" type="audio/mpeg">
+    </audio>
     <script>
-        // --- Matrix Animation ---
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        // --- 3D Hologram Background (Three.js) ---
+        const canvas = document.getElementById('hologram-canvas');
+        const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
 
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff0000";
-            ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
+        // Add floating objects
+        const geometry = new THREE.IcosahedronGeometry(1, 0);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x8a2be2, wireframe: true, side: THREE.DoubleSide
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        // Add a secondary glowing orb
+        const orbGeo = new THREE.SphereGeometry(0.5, 16, 16);
+        const orbMat = new THREE.MeshBasicMaterial({color: 0x00ffff, wireframe: true});
+        const orb = new THREE.Mesh(orbGeo, orbMat);
+        orb.position.x = 2; scene.add(orb);
+
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(5, 5, 5); scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        function animateBg() {
+            requestAnimationFrame(animateBg);
+            mesh.rotation.x += 0.002; mesh.rotation.y += 0.003;
+            orb.position.y = Math.sin(Date.now() * 0.001) * 0.5;
+            orb.rotation.y += 0.01;
+            renderer.render(scene, camera);
         }
-        setInterval(drawMatrix, 50);
+        animateBg();
 
-        // --- Data Lists ---
-        const bots = [
-            {n: "Tredic Bug bot", p: "2300"}, {n: "Ovalium Bug bot", p: "2400"},
-            {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"},
-            {n: "Otax Bug bot", p: "2300"}, {n: "Xinso Bug bot", p: "2300"},
-            {n: "Lakiya Crasher", p: "2600"}, {n: "Tredic Bug apk", p: "2800"},
-            {n: "Otax Bug Apk", p: "2800"}
-        ];
+        // --- Custom Cursor & Music Logic ---
+        const cursor = document.getElementById('custom-cursor');
+        const bgSound = document.getElementById('bgSound');
+        bgSound.volume = 0.3;
 
-        const panels = [
-            {n: "UNLIMITED PANEL", p: "450"}, {n: "ADMIN PANEL", p: "1400"},
-            {n: "PT RESELL ACCESS", p: "2600"}, {n: "OWNER PANEL", p: "3600"},
-            {n: "BUG BOT DEPLOY", p: "450"}, {n: "MD BOT DEPLOY", p: "400"}
-        ];
+        document.addEventListener('mousemove', e => {
+            gsap.to(cursor, {x: e.clientX - 10, y: e.clientY - 10, duration: 0.1});
+        });
 
-        function renderCards(data, elementId) {
-            const container = document.getElementById(elementId);
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="card" data-tilt>
-                        <i class="fas fa-terminal" style="color:var(--neon-red)"></i>
-                        <h3>${item.n}</h3>
-                        <span class="price">Rs. ${item.p}.00</span>
-                        <a href="#" onclick="buy('${item.n}', '${item.p}')" class="buy-btn">PURCHASE</a>
-                    </div>
-                `;
-            });
-        }
+        // Start music on first click
+        document.addEventListener('click', () => {
+            bgSound.play().catch(()=>{});
+        }, {once: true});
 
-        renderCards(bots, 'bot-grid');
-        renderCards(panels, 'panel-grid');
-
-        // --- Loader ---
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                VanillaTilt.init(document.querySelectorAll(".card"), { max: 25, speed: 400, glare: true, "max-glare": 0.5 });
-            }, 2500);
-        };
-
-        // --- Buy Action ---
+        // Buy Action (Inbox)
         function buy(name, price) {
-            const msg = `Hello Dev Mitzii, I'm interested in buying:\n\n🛡️ Product: ${name}\n💰 Price: Rs. ${price}.00\n\nSend me payment details.`;
+            const msg = `Hello Dev Mitzii, I'm ordering:\n\n💎 Product: ${name}\n💰 Price: Rs. ${price}.00\n\nPlease send details.`;
             const encoded = encodeURIComponent(msg);
-            const method = confirm("ORDER VIA:\n\nOK - WhatsApp\nCancel - Telegram");
+            const method = confirm("Order via WhatsApp?\n(Cancel for Telegram)");
             if(method) window.open(`https://wa.me/message/X45CUX4LO3AQD1?text=${encoded}`);
             else window.open(`https://t.me/CyberMitzii?text=${encoded}`);
         }
