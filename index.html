@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mitzii Store | Official Enterprise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         :root {
             --bg: #000000;
-            --card-bg: #111111;
-            --accent: #0071e3; /* Apple Blue */
+            --accent: #0071e3;
             --text-main: #f5f5f7;
             --text-sec: #86868b;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * {
@@ -28,134 +28,109 @@
             background-color: var(--bg);
             color: var(--text-main);
             overflow-x: hidden;
-            line-height: 1.5;
         }
 
-        /* --- 1. Minimal 3D Loading --- */
+        /* --- 1. 3D Background Canvas --- */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /* --- 2. Minimalist 3D Loader --- */
         #loader {
             position: fixed; inset: 0; background: #000;
             z-index: 10000; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
-        .loader-3d-box {
-            width: 50px; height: 50px;
-            border: 2px solid var(--accent);
-            animation: rotate3d 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            box-shadow: 0 0 30px rgba(0, 113, 227, 0.3);
+        .cube-loader {
+            width: 40px; height: 40px;
+            border: 1px solid var(--accent);
+            animation: rotateCube 2s infinite ease-in-out;
         }
-        @keyframes rotate3d {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(180deg) rotateY(180deg); }
-        }
-        .loader-text {
-            margin-top: 25px; font-family: 'Orbitron';
-            font-size: 14px; letter-spacing: 5px; color: #fff;
+        @keyframes rotateCube {
+            0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+            50% { transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); }
+            100% { transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); }
         }
 
-        /* --- 2. Clean Navigation --- */
+        /* --- 3. Clean Apple Navigation --- */
         header {
-            padding: 20px 10%; display: flex; justify-content: space-between;
-            align-items: center; background: rgba(0,0,0,0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            position: sticky; top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 10%; display: flex; justify-content: space-between;
+            align-items: center; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px); position: fixed; top: 0; width: 100%; z-index: 1000;
         }
         .logo {
-            font-family: 'Orbitron'; font-size: 18px; font-weight: 700;
-            letter-spacing: 2px; color: #fff; text-decoration: none;
+            font-family: 'Orbitron'; font-size: 18px; color: #fff; text-decoration: none;
+            letter-spacing: 2px;
         }
         nav a {
-            text-decoration: none; color: var(--text-sec);
-            font-size: 12px; font-weight: 500; margin-left: 30px;
-            transition: color 0.3s;
+            text-decoration: none; color: var(--text-sec); font-size: 12px;
+            margin-left: 30px; transition: 0.3s; font-weight: 500;
         }
         nav a:hover { color: #fff; }
 
-        /* --- 3. Hero Section (Apple Style) --- */
+        /* --- 4. Hero Section --- */
         .hero {
-            height: 80vh; display: flex; flex-direction: column;
+            height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+            padding: 0 10%;
         }
         .hero h1 {
-            font-size: clamp(40px, 8vw, 85px); font-weight: 700;
-            letter-spacing: -2px; margin-bottom: 15px;
-            background: linear-gradient(180deg, #fff 0%, #888 100%);
+            font-size: clamp(40px, 8vw, 80px); font-weight: 800;
+            letter-spacing: -2px; margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff 40%, #555 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .hero p {
-            font-size: 20px; color: var(--text-sec); max-width: 600px;
+            font-size: 20px; color: var(--text-sec); max-width: 700px;
             margin-bottom: 40px; font-weight: 300;
         }
 
-        /* --- 4. Store Grid --- */
-        .section { padding: 80px 10%; }
+        /* --- 5. Grid & Cards --- */
+        .section { padding: 100px 10%; }
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-
-        /* --- Luxury Product Card --- */
         .card {
-            background: var(--card-bg);
-            border-radius: 28px; padding: 50px 35px;
-            text-align: center; border: 1px solid transparent;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+            background: var(--glass);
+            border-radius: 30px; padding: 60px 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(10px);
+            text-align: center;
         }
         .card:hover {
-            transform: scale(1.02);
-            border-color: #333;
-            background: #161617;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-10px);
+            border-color: var(--accent);
         }
-        .card i { font-size: 35px; color: var(--accent); margin-bottom: 25px; }
-        .card h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-        .card p { color: var(--text-sec); font-size: 14px; margin-bottom: 25px; }
+        .card i { font-size: 30px; color: var(--accent); margin-bottom: 25px; }
+        .price { font-size: 30px; font-weight: 700; display: block; margin: 20px 0; }
 
-        .price {
-            font-size: 28px; font-weight: 700; color: #fff;
-            display: block; margin-bottom: 25px;
-        }
-
-        /* --- Professional Buttons --- */
-        .buy-btn {
-            background: var(--accent); color: white;
-            padding: 12px 28px; border-radius: 40px;
+        .btn {
+            background: var(--accent); color: #fff;
+            padding: 12px 30px; border-radius: 50px;
             text-decoration: none; font-size: 14px; font-weight: 600;
-            display: inline-block; transition: 0.3s;
+            transition: 0.3s; display: inline-block;
         }
-        .buy-btn:hover { background: #0077ed; transform: scale(1.05); }
+        .btn:hover { background: #0077ed; transform: scale(1.05); }
 
-        /* --- Lightning Effect (Subtle) --- */
-        #lightning-canvas {
-            position: fixed; inset: 0; z-index: -1;
-            pointer-events: none; opacity: 0.3;
-        }
-
-        /* --- Footer --- */
         footer {
-            padding: 100px 10%; text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            background: #000;
+            padding: 80px 10%; border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center; color: var(--text-sec);
         }
-        .footer-logo { font-family: 'Orbitron'; font-size: 20px; margin-bottom: 20px; display: block; }
-        .contact-link {
-            color: var(--accent); text-decoration: none; font-weight: 600;
-            font-size: 18px; border-bottom: 1px solid transparent;
-            transition: 0.3s;
-        }
-        .contact-link:hover { border-color: var(--accent); }
-
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-3d-box"></div>
-        <div class="loader-text">MITZII STORE</div>
+        <div class="cube-loader"></div>
+        <div style="margin-top:20px; font-family:'Orbitron'; font-size:12px; letter-spacing:4px;">MITZII STORE</div>
     </div>
 
-    <canvas id="lightning-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
     <header>
         <a href="#" class="logo">MITZII.</a>
@@ -169,121 +144,110 @@
 
     <section class="hero">
         <h1>Mitzii Store.</h1>
-        <p>Premium digital infrastructure and automation tools for high-end enterprises.</p>
-        <div style="display: flex; gap: 20px;">
-            <a href="#vpn" class="buy-btn">Get Started</a>
-            <a href="#contact" style="color: var(--accent); text-decoration: none; font-weight: 600; padding: 12px;">Contact Sales ></a>
-        </div>
+        <p>Expertly crafted digital solutions for the next generation of automation and infrastructure.</p>
+        <a href="#vpn" class="btn">Learn More</a>
     </section>
 
     <div id="vpn" class="section">
-        <h2 style="font-size: 35px; margin-bottom: 40px; text-align: center;">Secure Networking.</h2>
+        <h2 style="font-size:32px; margin-bottom:50px; text-align:center;">Secure Networking.</h2>
         <div class="grid">
-            <div class="card" data-tilt>
-                <i class="fas fa-shield-halved"></i>
-                <h3>100GB Private VPN</h3>
-                <p>Enterprise grade encryption with global high-speed nodes.</p>
+            <div class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>100GB VPN</h3>
                 <span class="price">Rs. 300.00</span>
-                <a href="#" onclick="buy('100GB VPN','300')" class="buy-btn">Purchase</a>
+                <a href="#" onclick="buy('100GB VPN','300')" class="btn">Order</a>
             </div>
-            <div class="card" data-tilt>
-                <i class="fas fa-vault"></i>
-                <h3>500GB Ultra VPN</h3>
-                <p>Optimized for heavy data traffic and professional security.</p>
+            <div class="card">
+                <i class="fas fa-server"></i>
+                <h3>500GB VPN</h3>
                 <span class="price">Rs. 800.00</span>
-                <a href="#" onclick="buy('500GB VPN','800')" class="buy-btn">Purchase</a>
+                <a href="#" onclick="buy('500GB VPN','800')" class="btn">Order</a>
             </div>
-            <div class="card" data-tilt>
+            <div class="card">
                 <i class="fas fa-infinity"></i>
                 <h3>Unlimited Elite</h3>
-                <p>The ultimate networking tool. Unmatched speed and zero limits.</p>
                 <span class="price">Rs. 1150.00</span>
-                <a href="#" onclick="buy('Unlimited VPN','1150')" class="buy-btn">Purchase</a>
+                <a href="#" onclick="buy('Unlimited VPN','1150')" class="btn">Order</a>
             </div>
         </div>
     </div>
 
-    <div id="bots" class="section" style="background: #050505;">
-        <h2 style="font-size: 35px; margin-bottom: 40px; text-align: center;">Advanced Automation.</h2>
+    <div id="bots" class="section">
+        <h2 style="font-size:32px; margin-bottom:50px; text-align:center;">Automation Tools.</h2>
         <div class="grid" id="bot-grid"></div>
     </div>
 
-    <div id="panels" class="section">
-        <h2 style="font-size: 35px; margin-bottom: 40px; text-align: center;">Infrastructure.</h2>
-        <div class="grid" id="panel-grid"></div>
-    </div>
-
-    <footer id="contact">
-        <span class="footer-logo">MITZII STORE.</span>
-        <p style="color: var(--text-sec); margin-bottom: 30px;">Professional solutions managed by Dev Mitzii.</p>
-        <a href="https://wa.me/message/X45CUX4LO3AQD1" class="contact-link">Contact our Developers</a>
-        <p style="margin-top: 60px; font-size: 12px; color: #333;">© 2026 Mitzii Official Enterprise. All Rights Reserved.</p>
+    <footer>
+        <p>Mitzii Official Store &copy; 2026</p>
+        <p style="font-size:12px; margin-top:10px;">Managed by Dev Mitzii</p>
     </footer>
 
     <script>
-        // --- Subtle Lightning ---
-        const canvas = document.getElementById('lightning-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        function drawLightning() {
-            if (Math.random() > 0.98) {
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(Math.random() * canvas.width, 0);
-                ctx.lineTo(Math.random() * canvas.width, canvas.height);
-                ctx.stroke();
-                setTimeout(() => ctx.clearRect(0,0,canvas.width,canvas.height), 30);
-            }
-            requestAnimationFrame(drawLightning);
+        // --- 1. Three.js 3D Background Animation ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.Camera();
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        
+        // Creating Floating 3D Particles
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 5000; i++) {
+            vertices.push(Math.random() * 2000 - 1000);
+            vertices.push(Math.random() * 2000 - 1000);
+            vertices.push(Math.random() * 2000 - 1000);
         }
-        drawLightning();
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        const material = new THREE.PointsMaterial({ color: 0x0071e3, size: 2, transparent: true, opacity: 0.5 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
 
-        // --- Data ---
+        const perspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        perspectiveCamera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            points.rotation.y += 0.001;
+            points.rotation.x += 0.0005;
+            renderer.render(scene, perspectiveCamera);
+        }
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        animate();
+
+        // --- 2. Dynamic Content ---
         const bots = [
             {n: "Tredic Bug bot", p: "2300"}, {n: "Ovalium Bug bot", p: "2400"},
-            {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"},
-            {n: "Otax Bug bot", p: "2300"}, {n: "Xinso Bug bot", p: "2300"},
-            {n: "Lakiya Crasher", p: "2600"}, {n: "Tredic Bug apk", p: "2800"}
+            {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"}
         ];
-        const panels = [
-            {n: "UNLIMITED PANEL", p: "450"}, {n: "ADMIN PANEL", p: "1400"},
-            {n: "OWNER PANEL", p: "3600"}, {n: "RESELL ACCESS", p: "2600"}
-        ];
+        const grid = document.getElementById('bot-grid');
+        bots.forEach(b => {
+            grid.innerHTML += `
+                <div class="card">
+                    <i class="fas fa-robot"></i>
+                    <h3>${b.n}</h3>
+                    <span class="price">Rs. ${b.p}.00</span>
+                    <a href="#" onclick="buy('${b.n}','${b.p}')" class="btn">Order</a>
+                </div>
+            `;
+        });
 
-        function fill(data, id, icon) {
-            const container = document.getElementById(id);
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="card" data-tilt>
-                        <i class="fas ${icon}"></i>
-                        <h3>${item.n}</h3>
-                        <p>High-performance digital asset.</p>
-                        <span class="price">Rs. ${item.p}.00</span>
-                        <a href="#" onclick="buy('${item.n}','${item.p}')" class="buy-btn">Purchase</a>
-                    </div>
-                `;
-            });
-        }
-        fill(bots, 'bot-grid', 'fa-robot');
-        fill(panels, 'panel-grid', 'fa-terminal');
-
-        // --- Loader ---
+        // --- 3. Close Loader ---
         window.onload = () => {
             setTimeout(() => {
-                gsap.to("#loader", {opacity: 0, duration: 0.8, onComplete: () => {
+                gsap.to("#loader", { opacity: 0, duration: 1, onComplete: () => {
                     document.getElementById('loader').style.display = 'none';
-                    VanillaTilt.init(document.querySelectorAll(".card"), { max: 5, speed: 1000, glare: true, "max-glare": 0.1 });
                 }});
             }, 2000);
         };
 
-        function buy(name, price) {
-            const text = encodeURIComponent(`Inquiry for: ${name}\nPrice: Rs. ${price}\n\nPlease provide corporate payment methods.`);
-            window.open(`https://wa.me/message/X45CUX4LO3AQD1?text=${text}`);
+        function buy(n, p) {
+            window.open(`https://wa.me/message/X45CUX4LO3AQD1?text=Order:${n}`);
         }
+
+        window.addEventListener('resize', () => {
+            perspectiveCamera.aspect = window.innerWidth / window.innerHeight;
+            perspectiveCamera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
