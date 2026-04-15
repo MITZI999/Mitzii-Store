@@ -3,153 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MITZII STORE | Official Premium Digital Shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <title>Mitzii Store | Professional Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
     <style>
         :root {
-            --bg-deep: #000000;
-            --accent: #0071e3; /* Apple Blue */
-            --glass: rgba(255, 255, 255, 0.02);
-            --text-main: #ffffff;
+            --bg: #000000;
+            --accent: #0071e3;
+            --text: #f5f5f7;
             --text-dim: #86868b;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Geist', 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 1. 3D Background Canvas --- */
+        /* --- 3D Background Canvas --- */
         #bg-canvas {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #1a0033 0%, #000 100%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
         }
 
-        /* --- 2. 3D Preloader --- */
+        /* --- Custom Loader --- */
         #loader {
             position: fixed; inset: 0; background: #000;
             z-index: 10000; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
-        .cube-wrapper {
-            width: 100px; height: 100px; perspective: 600px;
+        .loader-ring {
+            width: 40px; height: 40px; border: 2px solid #333;
+            border-top: 2px solid var(--accent); border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        .cube {
-            width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d; animation: rotateCube 3s infinite linear;
-        }
-        .face {
-            position: absolute; width: 100px; height: 100px;
-            background: rgba(0, 113, 227, 0.1); border: 2px solid var(--accent);
-            box-shadow: 0 0 30px var(--accent);
-        }
-        .front  { transform: translateZ(50px); }
-        .back   { transform: rotateY(180deg) translateZ(50px); }
-        .right  { transform: rotateY(90deg) translateZ(50px); }
-        .left   { transform: rotateY(-90deg) translateZ(50px); }
-        .top    { transform: rotateX(90deg) translateZ(50px); }
-        .bottom { transform: rotateX(-90deg) translateZ(50px); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        @keyframes rotateCube {
-            from { transform: rotateX(0deg) rotateY(0deg); }
-            to { transform: rotateX(360deg) rotateY(360deg); }
-        }
-        .loader-text {
-            margin-top: 30px; font-family: 'Syncopate'; font-size: 20px;
-            color: var(--accent); letter-spacing: 5px; text-transform: uppercase;
-        }
-
-        /* --- Header & Navigation --- */
+        /* --- Professional Header --- */
         header {
-            padding: 20px 10%; display: flex; justify-content: space-between;
-            align-items: center; background: rgba(0,0,0,0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            position: fixed; width: 100%; top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 10%; display: flex; justify-content: space-between;
+            align-items: center; position: fixed; top: 0; width: 100%;
+            z-index: 1000; backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
-        .logo { font-family: 'Syncopate'; font-size: 24px; color: #fff; text-decoration: none; font-weight: 700; letter-spacing: 2px;}
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -1px; color: #fff; text-decoration: none; }
+        nav a { text-decoration: none; color: var(--text-dim); font-size: 13px; margin-left: 25px; transition: 0.3s; }
+        nav a:hover { color: #fff; }
 
         /* --- Hero Section --- */
         .hero {
-            height: 100vh; display: flex; flex-direction: column;
+            height: 90vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
+            padding: 0 10%;
         }
-        .hero h1 {
-            font-family: 'Syncopate'; font-size: clamp(40px, 10vw, 80px);
-            letter-spacing: -3px; color: #fff; margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(0, 113, 227, 0.3);
-        }
-        .hero p { font-size: 22px; color: var(--text-dim); max-width: 600px; margin-bottom: 40px; }
+        .hero h1 { font-size: clamp(50px, 10vw, 100px); font-weight: 700; letter-spacing: -4px; margin-bottom: 20px; line-height: 0.9; }
+        .hero p { font-size: 22px; color: var(--text-dim); max-weight: 300; margin-bottom: 40px; }
 
-        /* --- Grid & Cards --- */
+        /* --- Section Styling --- */
         .section { padding: 80px 10%; }
+        .section-title { font-size: 40px; font-weight: 700; margin-bottom: 40px; text-align: center; letter-spacing: -1px; }
+        
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
+
+        /* --- Apple Style Card --- */
         .card {
-            background: var(--glass);
-            border-radius: 28px; padding: 60px 40px;
-            text-align: center; border: 1px solid transparent;
-            backdrop-filter: blur(10px); transition: 0.5s;
+            background: var(--glass); border-radius: 24px; padding: 40px;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.5s cubic-bezier(0.15, 0, 0.15, 1);
+            backdrop-filter: blur(15px); text-align: center;
         }
-        .card:hover { border-color: var(--accent); background: rgba(0, 113, 227, 0.05); transform: translateY(-5px); }
-        .card i { font-size: 35px; color: var(--accent); margin-bottom: 25px; }
+        .card:hover { transform: scale(1.02); background: rgba(255,255,255,0.06); border-color: var(--accent); }
         .card h3 { font-size: 24px; margin-bottom: 10px; font-weight: 600; }
-        .card p { color: var(--text-dim); font-size: 14px; margin-bottom: 25px; }
-        .price { font-size: 30px; font-weight: 700; color: #fff; display: block; margin-bottom: 25px; }
+        .price { font-size: 28px; font-weight: 700; display: block; margin: 20px 0; color: #fff; }
 
-        .buy-btn {
-            background: var(--accent); color: white;
-            padding: 12px 30px; border-radius: 50px;
-            text-decoration: none; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: 0.3s;
-        }
-        .buy-btn:hover { background: white; color: black; transform: scale(1.05); }
-
-        /* --- Audio Button (Browser Workaround) --- */
-        #audio-workaround {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            z-index: 5000; display: none;
+        .btn-buy {
+            background: var(--accent); color: #fff; padding: 12px 30px;
+            border-radius: 40px; text-decoration: none; font-size: 14px;
+            font-weight: 600; display: inline-block; cursor: pointer; border: none;
         }
 
-        footer { padding: 100px; text-align: center; border-top: 1px solid #111; }
+        /* --- Contact Modal --- */
+        #contact-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 2000; display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-box {
+            background: #111; padding: 40px; border-radius: 30px;
+            text-align: center; width: 90%; max-width: 400px;
+        }
+        .modal-btn {
+            display: block; padding: 15px; margin: 10px 0; border-radius: 15px;
+            text-decoration: none; font-weight: 600; font-size: 16px;
+        }
+        .wa-btn { background: #25d366; color: #000; }
+        .tg-btn { background: #0088cc; color: #fff; }
 
+        footer { padding: 100px 10%; text-align: center; border-top: 1px solid #111; }
+        .dev-badge { color: var(--accent); font-weight: 700; font-size: 18px; text-decoration: none; }
     </style>
 </head>
-<body>
+<body onclick="initAudio()">
 
     <div id="loader">
-        <div class="cube-wrapper">
-            <div class="cube">
-                <div class="face front"></div><div class="face back"></div>
-                <div class="face right"></div><div class="face left"></div>
-                <div class="face top"></div><div class="face bottom"></div>
-            </div>
-        </div>
-        <div class="loader-text">MITZII INITIALIZING</div>
+        <div class="loader-ring"></div>
     </div>
 
     <canvas id="bg-canvas"></canvas>
-
-    <div id="audio-workaround">
-        <button onclick="activateAudio()" class="buy-btn" style="background:var(--accent); font-family:'Syncopate'; letter-spacing:5px;">TOUCH TO START AUDIO</button>
-    </div>
 
     <header>
         <a href="#" class="logo">MITZII.</a>
@@ -157,151 +129,145 @@
             <a href="#vpn">VPN</a>
             <a href="#bots">BOTS</a>
             <a href="#panels">PANELS</a>
-            <a href="https://wa.me/message/X45CUX4LO3AQD1" style="color:var(--accent)">CONTACT</a>
+            <a href="#developer">DEVELOPER</a>
         </nav>
     </header>
 
     <section class="hero">
-        <p style="letter-spacing: 5px; color: var(--accent);">ESTABLISHED 2026</p>
         <h1>Mitzii Store.</h1>
-        <p>Premium digital networking, automation bots, and core infrastructure panels.</p>
-        <a href="#vpn" class="buy-btn">Browse Collection</a>
-        </section>
+        <p>Premium VPN, Automation Bots, and Infrastructure Panels.</p>
+        <a href="#vpn" class="btn-buy">Browse Collection</a>
+    </section>
 
     <div id="vpn" class="section">
-        <h2 style="font-size:32px; font-family:'Syncopate'; text-align:center; margin-bottom:50px;">// NETWORKING.</h2>
+        <h2 class="section-title">Networking.</h2>
         <div class="grid">
-            <div class="card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>100GB Private VPN</h3>
-                <p>Enterprise grade security.</p>
-                <span class="price">Rs. 300.00</span>
-                <a href="#" onclick="buy('100GB VPN','300')" class="buy-btn">Acquire</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-server"></i>
-                <h3>500GB Ultra VPN</h3>
-                <p>High data traffic capability.</p>
-                <span class="price">Rs. 800.00</span>
-                <a href="#" onclick="buy('500GB VPN','800')" class="buy-btn">Acquire</a>
-            </div>
-            <div class="card" style="border-color:gold">
-                <i class="fas fa-infinity" style="color:gold"></i>
-                <h3 style="color:gold">Unlimited Elite</h3>
-                <p style="color:#ccc;">Maximum performance.</p>
-                <span class="price">Rs. 1150.00</span>
-                <a href="#" onclick="buy('Unlimited VPN','1150')" class="buy-btn" style="background:gold; color:black;">Acquire</a>
-            </div>
+            <div class="card"><h3>100GB VPN</h3><span class="price">Rs. 300.00</span><button class="btn-buy" onclick="openContact('100GB VPN', '300')">Buy Now</button></div>
+            <div class="card"><h3>500GB VPN</h3><span class="price">Rs. 800.00</span><button class="btn-buy" onclick="openContact('500GB VPN', '800')">Buy Now</button></div>
+            <div class="card"><h3>Unlimited VPN</h3><span class="price">Rs. 1150.00</span><button class="btn-buy" onclick="openContact('Unlimited VPN', '1150')">Buy Now</button></div>
         </div>
     </div>
 
-    <div id="bots" class="section" style="background:rgba(255,255,255,0.01)">
-        <h2 style="font-size:32px; font-family:'Syncopate'; text-align:center; margin-bottom:50px;">// AUTOMATION.</h2>
+    <div id="bots" class="section">
+        <h2 class="section-title">Bug Bots.</h2>
         <div class="grid" id="bot-grid"></div>
     </div>
 
     <div id="panels" class="section">
-        <h2 style="font-size:32px; font-family:'Syncopate'; text-align:center; margin-bottom:50px;">// INFRASTRUCTURE.</h2>
+        <h2 class="section-title">Panels.</h2>
         <div class="grid" id="panel-grid"></div>
     </div>
 
+    <div id="developer" class="section" style="text-align: center;">
+        <h2 class="section-title">The Developer.</h2>
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <i class="fas fa-code" style="font-size: 40px; color: var(--accent); margin-bottom: 20px;"></i>
+            <h3>Dev Mitzii</h3>
+            <p style="margin-bottom: 30px;">Official Creator & Lead Architect</p>
+            <a href="https://whatsapp.com/channel/0029Vb7n81K5a249fI8Y4S2j" class="btn-buy" style="background:#fff; color:#000; margin-bottom: 10px; width: 100%;">WhatsApp Channel</a>
+            <a href="https://t.me/devmitziii" class="btn-buy" style="background:#0088cc; width: 100%;">Telegram Channel</a>
+        </div>
+    </div>
+
     <footer>
-        <p>Managed by Dev Mitzii.</p>
-        <p style="opacity:0.2;">Mitzii Store &copy; 2026</p>
+        <p>© 2026 Mitzii Store. All Rights Reserved.</p>
+        <a href="#" class="dev-badge">DEV MITZII</a>
     </footer>
 
+    <div id="contact-modal" onclick="closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h2 id="modal-item">Product Name</h2>
+            <p id="modal-price" style="margin-bottom: 20px;">Price</p>
+            <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Choose your platform to buy:</p>
+            <a href="#" id="wa-link" class="modal-btn wa-btn"><i class="fab fa-whatsapp"></i> WhatsApp Inbox</a>
+            <a href="#" id="tg-link" class="modal-btn tg-btn"><i class="fab fa-telegram"></i> Telegram Inbox</a>
+            <button onclick="closeModal()" style="background:none; border:none; color:#555; margin-top:20px; cursor:pointer;">Cancel</button>
+        </div>
+    </div>
+
     <script>
-        // --- Audio List ---
-        const songs = [
-            "https://files.catbox.moe/6zfgvg.mp3",
-            "https://files.catbox.moe/7onzbx.mp3",
-            "https://files.catbox.moe/jvcjxl.mp3",
-            "https://files.catbox.moe/7itye0.mp3"
-        ];
-        
-        let audio = new Audio();
-        let audioActivated = false;
-
-        function activateAudio() {
-            if(!audioActivated) {
-                const randomSong = songs[Math.floor(Math.random()*songs.length)];
-                audio.src = randomSong;
-                audio.play();
-                audioActivated = true;
-                document.getElementById('audio-workaround').style.display = 'none';
-            }
-        }
-
-        // --- Subtle Lightning Three.js Background ---
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2000;
-        const posArray = new Float32Array(starCount * 3);
-
-        for(let i=0; i<starCount*3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 10;
-        }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const starMaterial = new THREE.PointsMaterial({ size: 0.005, color: 0x0071e3 });
-        const starMesh = new THREE.Points(starGeometry, starMaterial);
-        scene.add(starMesh);
-
-        camera.position.z = 2;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            starMesh.rotation.y += 0.001;
-            starMesh.rotation.x += 0.0005;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // --- Content Loading ---
+        // --- Data ---
         const bots = [
             {n: "Tredic Bug bot", p: "2300"}, {n: "Ovalium Bug bot", p: "2400"},
             {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"},
-            {n: "Otax Bug bot", p: "2300"}, {n: "Xinso Bug bot", p: "2300"}
+            {n: "Otax Bug bot", p: "2300"}, {n: "Xinso Bug bot", p: "2300"},
+            {n: "Lakiya Crasher", p: "2600"}, {n: "Tredic Bug apk", p: "2800"},
+            {n: "Otax Bug Apk", p: "2800"}
         ];
         const panels = [
             {n: "UNLIMITED PANEL", p: "450"}, {n: "ADMIN PANEL", p: "1400"},
-            {n: "RESELL ACCESS", p: "2600"}
+            {n: "RESELL ACCESS", p: "2600"}, {n: "OWNER PANEL", p: "3600"},
+            {n: "BUG BOT DEPLOY", p: "450"}, {n: "MD BOT DEPLOY", p: "400"}
         ];
 
-        function populate(data, id) {
+        function fill(data, id) {
             const container = document.getElementById(id);
             data.forEach(item => {
                 container.innerHTML += `
                     <div class="card">
-                        <i class="fas fa-microchip"></i>
                         <h3>${item.n}</h3>
                         <span class="price">Rs. ${item.p}.00</span>
-                        <a href="#" onclick="buy('${item.n}','${item.p}')" class="buy-btn">Acquire</a>
+                        <button class="btn-buy" onclick="openContact('${item.n}', '${item.p}')">Buy Now</button>
                     </div>
                 `;
             });
         }
-        populate(bots, 'bot-grid');
-        populate(panels, 'panel-grid');
+        fill(bots, 'bot-grid');
+        fill(panels, 'panel-grid');
 
-        // --- Loader Closure ---
-        window.onload = () => {
-            setTimeout(() => {
-                gsap.to("#loader", {opacity: 0, duration: 1, onComplete: () => {
-                    document.getElementById('loader').style.display = 'none';
-                    // Show audio workload after loading
-                    document.getElementById('audio-workaround').style.display = 'block';
-                }});
-            }, 3000);
-        };
-
-        function buy(item, price) {
-            const encoded = encodeURIComponent(`Hello Mitzii,\nI want to acquire: ${item}\nPrice: Rs. ${price}\nPlease send payment details.`);
-            window.open(`https://wa.me/message/X45CUX4LO3AQD1?text=${encoded}`);
+        // --- Buy Logic ---
+        function openContact(item, price) {
+            document.getElementById('modal-item').innerText = item;
+            document.getElementById('modal-price').innerText = "Rs. " + price;
+            
+            const msg = encodeURIComponent(`Hello Dev Mitzii,\nI want to buy: ${item}\nPrice: Rs. ${price}\nPlease provide payment details.`);
+            
+            document.getElementById('wa-link').href = `https://wa.me/message/X45CUX4LO3AQD1?text=${msg}`;
+            document.getElementById('tg-link').href = `https://t.me/CyberMitzii?text=${msg}`;
+            
+            document.getElementById('contact-modal').style.display = 'flex';
         }
+
+        function closeModal() { document.getElementById('contact-modal').style.display = 'none'; }
+
+        // --- Audio Logic ---
+        const songs = [
+            "https://files.catbox.moe/6zfgvg.mp3", "https://files.catbox.moe/7onzbx.mp3",
+            "https://files.catbox.moe/jvcjxl.mp3", "https://files.catbox.moe/7itye0.mp3"
+        ];
+        let audio = new Audio();
+        let isStarted = false;
+        function initAudio() {
+            if(!isStarted) {
+                audio.src = songs[Math.floor(Math.random()*songs.length)];
+                audio.play(); isStarted = true;
+            }
+        }
+
+        // --- 3D Background ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geo = new THREE.BufferGeometry();
+        const count = 2000;
+        const pos = new Float32Array(count * 3);
+        for(let i=0; i<count*3; i++) { pos[i] = (Math.random()-0.5)*10; }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ size: 0.005, color: 0x0071e3 });
+        const points = new THREE.Points(geo, mat);
+        scene.add(points);
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            points.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.onload = () => { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 500); }, 1500); };
     </script>
 </body>
 </html>
