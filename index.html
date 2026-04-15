@@ -3,224 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mitzii Store | Official Digital Enterprise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+    <title>Mitzii Store | Official Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
     <style>
         :root {
-            --bg-deep: #000000;
-            --accent: #ffffff;
-            --secondary-text: #86868b; /* Apple Style Gray */
-            --border: rgba(255, 255, 255, 0.1);
-            --luxury-blue: #0071e3;
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --accent: #ff0055;
+            --bg: #050505;
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            color: var(--accent);
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             scroll-behavior: smooth;
         }
 
-        /* --- Luxury 3D Preloader --- */
+        body {
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- 1. 3D Loading Screen --- */
         #loader {
             position: fixed; inset: 0; background: #000;
             z-index: 10000; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
-        .luxury-spinner {
-            width: 50px; height: 50px;
-            border-left: 2px solid white;
-            border-radius: 50%;
-            animation: rotate 1s linear infinite;
+        .cube-wrapper {
+            width: 100px; height: 100px;
+            perspective: 600px;
         }
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .cube {
+            width: 100%; height: 100%;
+            position: relative; transform-style: preserve-3d;
+            animation: rotateCube 2s infinite linear;
+        }
+        .face {
+            position: absolute; width: 100px; height: 100px;
+            border: 2px solid var(--primary);
+            background: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 20px var(--primary);
+        }
+        .front  { transform: translateZ(50px); }
+        .back   { transform: rotateY(180deg) translateZ(50px); }
+        .right  { transform: rotateY(90deg) translateZ(50px); }
+        .left   { transform: rotateY(-90deg) translateZ(50px); }
+        .top    { transform: rotateX(90deg) translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
 
-        /* --- Professional Navigation --- */
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* --- 2. Lightning & RGB Frame --- */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            border: 5px solid transparent;
+            border-image: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)) 1;
+            z-index: 9999; pointer-events: none;
+            animation: borderGlow 3s infinite alternate;
+        }
+        @keyframes borderGlow {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            100% { filter: hue-rotate(360deg) brightness(1.5); }
+        }
+
+        /* Lightning Canvas */
+        #lightning-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        /* --- Header --- */
         header {
-            width: 100%; padding: 20px 10%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--border);
+            padding: 25px 8%; display: flex; justify-content: space-between;
+            align-items: center; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
         }
-        .brand {
-            font-family: 'Lexend', sans-serif;
-            font-size: 22px; font-weight: 700;
-            letter-spacing: -1px; color: #fff;
+        .logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 24px; color: #fff; text-transform: uppercase;
+            letter-spacing: 5px; text-shadow: 0 0 10px var(--primary);
         }
-        nav a {
-            text-decoration: none; color: var(--secondary-text);
-            font-size: 13px; font-weight: 500; margin-left: 30px;
-            transition: 0.3s;
-        }
-        nav a:hover { color: #fff; }
 
-        /* --- Cinematic Hero Section --- */
+        /* --- Hero Section --- */
         .hero {
-            height: 100vh; display: flex; flex-direction: column;
+            height: 90vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
         }
-        .hero-title {
-            font-size: clamp(40px, 8vw, 90px);
-            font-weight: 800; letter-spacing: -3px;
-            background: linear-gradient(180deg, #fff 0%, #888 100%);
+        .hero h1 {
+            font-size: clamp(50px, 10vw, 100px);
+            font-weight: 800; background: linear-gradient(to right, #fff, #555);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
         }
-        .hero-sub {
-            color: var(--secondary-text); font-size: 18px;
-            max-width: 600px; line-height: 1.6; margin-bottom: 40px;
+        .hero p { color: var(--primary); letter-spacing: 10px; text-transform: uppercase; margin-top: 10px; }
+
+        /* --- Category Buttons --- */
+        .nav-buttons {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 50px;
+        }
+        .cat-btn {
+            padding: 15px 40px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05); color: white; text-decoration: none;
+            font-weight: 600; text-transform: uppercase; transition: 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        .cat-btn:hover {
+            background: var(--primary); color: black;
+            box-shadow: 0 0 30px var(--primary); transform: translateY(-5px);
         }
 
-        /* --- Service Sections --- */
-        .section { padding: 100px 10%; }
-        .section-label {
-            color: var(--luxury-blue); font-weight: 700;
-            text-transform: uppercase; font-size: 12px; letter-spacing: 2px;
-            margin-bottom: 15px; display: block;
-        }
-        .section-title { font-size: 40px; font-weight: 700; margin-bottom: 50px; }
-
+        /* --- Product Cards --- */
+        .container { padding: 80px 8%; }
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
         }
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px; border-radius: 30px; text-align: center;
+            transition: 0.5s; position: relative; overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        /* --- High-End Card Design --- */
-        .biz-card {
-            background: #111;
-            border: 1px solid var(--border);
-            padding: 40px; border-radius: 24px;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
-        }
-        .biz-card:hover {
-            background: #161617;
-            border-color: #333;
-            transform: translateY(-10px);
-        }
-        .biz-card i { font-size: 30px; color: var(--luxury-blue); margin-bottom: 25px; }
-        .biz-card h3 { font-size: 22px; margin-bottom: 12px; }
-        .biz-card p { color: var(--secondary-text); font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
+        .card:hover { border-color: var(--primary); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2); }
+        .price { font-size: 30px; font-weight: 800; color: #fff; margin: 20px 0; display: block; }
         
-        .price-row {
-            display: flex; justify-content: space-between; align-items: center;
-            border-top: 1px solid var(--border); padding-top: 20px;
+        .buy-now {
+            padding: 12px 30px; border-radius: 15px; background: white;
+            color: black; font-weight: 700; text-decoration: none; transition: 0.3s;
         }
-        .price { font-size: 24px; font-weight: 700; }
+        .buy-now:hover { background: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
-        /* --- Elite CTA Button --- */
-        .cta-btn {
-            background: var(--luxury-blue);
-            color: #fff; padding: 12px 25px;
-            border-radius: 40px; text-decoration: none;
-            font-size: 14px; font-weight: 600;
-            transition: 0.3s;
-        }
-        .cta-btn:hover { background: #0077ed; transform: scale(1.05); }
-
-        /* --- Professional Footer --- */
+        /* --- Contact Hub --- */
         footer {
-            background: #000; padding: 80px 10%;
-            border-top: 1px solid var(--border);
-            text-align: center; color: var(--secondary-text);
+            padding: 100px 8%; text-align: center; background: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .footer-logo { font-size: 20px; color: #fff; margin-bottom: 20px; display: block; }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 20px 50px; border-radius: 100px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: white; text-decoration: none; font-weight: 800;
+            font-size: 18px; margin-top: 30px;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="luxury-spinner"></div>
+        <div class="cube-wrapper">
+            <div class="cube">
+                <div class="face front"></div><div class="face back"></div>
+                <div class="face right"></div><div class="face left"></div>
+                <div class="face top"></div><div class="face bottom"></div>
+            </div>
+        </div>
+        <h2 style="color:var(--primary); margin-top:30px; letter-spacing:10px;">LOADING MITZII</h2>
     </div>
 
+    <canvas id="lightning-canvas"></canvas>
+
     <header>
-        <div class="brand">MITZII OFFICIAL</div>
-        <nav>
-            <a href="#vpn">VPN</a>
-            <a href="#bots">AUTOMATION</a>
-            <a href="#panels">INFRASTRUCTURE</a>
-            <a href="https://wa.me/message/X45CUX4LO3AQD1" style="color:var(--luxury-blue)">CONTACT</a>
-        </nav>
+        <div class="logo">Mitzii Store</div>
+        <div style="font-size: 12px; color: var(--primary);">OFFICIAL BUSINESS SITE</div>
     </header>
 
     <section class="hero">
-        <span class="section-label" style="color:#fff; opacity:0.6;">Enterprise Grade Tools</span>
-        <h1 class="hero-title">Next-Level Digital Services</h1>
-        <p class="hero-sub">Specialized solutions for automation, security, and high-performance server management. Built for the elite.</p>
-        <a href="#vpn" class="cta-btn" style="padding: 18px 40px; font-size: 16px;">Explore Inventory</a>
-    </section>
-
-    <section id="vpn" class="section">
-        <span class="section-label">Networking</span>
-        <h2 class="section-title">Encrypted VPN Access</h2>
-        <div class="grid">
-            <div class="card-wrap" data-tilt>
-                <div class="biz-card">
-                    <i class="fas fa-shield-halved"></i>
-                    <h3>100GB Premium</h3>
-                    <p>Business-class security with high-speed global nodes.</p>
-                    <div class="price-row">
-                        <span class="price">Rs. 300</span>
-                        <a href="#" onclick="purchase('100GB VPN', '300')" class="cta-btn">Order</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-wrap" data-tilt>
-                <div class="biz-card">
-                    <i class="fas fa-vault"></i>
-                    <h3>500GB Enterprise</h3>
-                    <p>Optimized for heavy data traffic and multiple instances.</p>
-                    <div class="price-row">
-                        <span class="price">Rs. 800</span>
-                        <a href="#" onclick="purchase('500GB VPN', '800')" class="cta-btn">Order</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-wrap" data-tilt>
-                <div class="biz-card" style="border-color: var(--luxury-blue);">
-                    <i class="fas fa-infinity"></i>
-                    <h3>Unlimited Elite</h3>
-                    <p>The ultimate connectivity tool. Zero limits, maximum speed.</p>
-                    <div class="price-row">
-                        <span class="price">Rs. 1150</span>
-                        <a href="#" onclick="purchase('Unlimited VPN', '1150')" class="cta-btn">Order</a>
-                    </div>
-                </div>
-            </div>
+        <h1>MITZII STORE</h1>
+        <p>Premium Digital Services & Tools</p>
+        
+        <div class="nav-buttons">
+            <a href="#vpn" class="cat-btn">VPN Services</a>
+            <a href="#bots" class="cat-btn">Bug Bots</a>
+            <a href="#panels" class="cat-btn">Pterodactyl</a>
         </div>
     </section>
 
-    <section id="bots" class="section" style="background: #050505;">
-        <span class="section-label">Automation</span>
-        <h2 class="section-title">Specialized Bot Inventory</h2>
-        <div class="grid" id="bot-grid"></div>
-    </section>
+    <div id="vpn" class="container">
+        <h2 style="margin-bottom:40px; text-transform:uppercase; letter-spacing:5px;">01. Private VPN</h2>
+        <div class="grid">
+            <div class="card" data-tilt>
+                <i class="fas fa-shield-alt" style="font-size:40px; color:var(--primary)"></i>
+                <h3>100GB VPN</h3>
+                <span class="price">Rs. 300.00</span>
+                <a href="#" onclick="buy('100GB VPN','300')" class="buy-now">Buy Now</a>
+            </div>
+            <div class="card" data-tilt>
+                <i class="fas fa-server" style="font-size:40px; color:var(--primary)"></i>
+                <h3>500GB VPN</h3>
+                <span class="price">Rs. 800.00</span>
+                <a href="#" onclick="buy('500GB VPN','800')" class="buy-now">Buy Now</a>
+            </div>
+            <div class="card" data-tilt style="border-color:gold">
+                <i class="fas fa-infinity" style="font-size:40px; color:gold"></i>
+                <h3 style="color:gold">UNLIMITED VPN</h3>
+                <span class="price">Rs. 1150.00</span>
+                <a href="#" onclick="buy('Unlimited VPN','1150')" class="buy-now" style="background:gold">Buy Now</a>
+            </div>
+        </div>
+    </div>
 
-    <section id="panels" class="section">
-        <span class="section-label">Hosting</span>
-        <h2 class="section-title">Pterodactyl Infrastructure</h2>
+    <div id="bots" class="container">
+        <h2 style="margin-bottom:40px; text-transform:uppercase; letter-spacing:5px;">02. Bug Bots</h2>
+        <div class="grid" id="bot-grid"></div>
+    </div>
+
+    <div id="panels" class="container">
+        <h2 style="margin-bottom:40px; text-transform:uppercase; letter-spacing:5px;">03. Pterodactyl Panels</h2>
         <div class="grid" id="panel-grid"></div>
-    </section>
+    </div>
 
     <footer>
-        <span class="footer-logo">MITZII.</span>
-        <p>Premium Digital Storefront Managed by Dev Mitzii.</p>
-        <p style="margin-top:20px; font-size:12px;">© 2026 All Rights Reserved.</p>
+        <h2>Need Assistance?</h2>
+        <p>Our developers are ready to help you.</p>
+        <a href="https://wa.me/message/X45CUX4LO3AQD1" class="contact-btn">
+            <i class="fab fa-whatsapp"></i> CONTACT DEV MITZII
+        </a>
+        <div style="margin-top:50px; opacity:0.3; font-size:12px;">© 2026 Mitzii Official Store. All Rights Reserved.</div>
     </footer>
 
     <script>
+        // --- 1. Lightning Animation Logic ---
+        const canvas = document.getElementById('lightning-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawLightning() {
+            if (Math.random() > 0.95) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, 0);
+                ctx.lineTo(Math.random() * canvas.width, canvas.height);
+                ctx.stroke();
+                setTimeout(() => ctx.clearRect(0,0,canvas.width,canvas.height), 50);
+            }
+            requestAnimationFrame(drawLightning);
+        }
+        drawLightning();
+
+        // --- 2. Load Data ---
         const bots = [
             {n: "Tredic Bug bot", p: "2300"}, {n: "Ovalium Bug bot", p: "2400"},
             {n: "Aphohis Bug bot", p: "2600"}, {n: "Applow Bug bot", p: "2200"},
@@ -231,42 +265,39 @@
 
         const panels = [
             {n: "UNLIMITED PANEL", p: "450"}, {n: "ADMIN PANEL", p: "1400"},
-            {n: "PT PANEL RESELL", p: "2600"}, {n: "OWNER PANEL", p: "3600"},
+            {n: "RESELL ACCESS", p: "2600"}, {n: "OWNER PANEL", p: "3600"},
             {n: "BUG BOT DEPLOY", p: "450"}, {n: "MD BOT DEPLOY", p: "400"}
         ];
 
-        function loadItems(data, elementId, icon) {
-            const container = document.getElementById(elementId);
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="card-wrap" data-tilt>
-                        <div class="biz-card">
-                            <i class="fas ${icon}"></i>
-                            <h3>${item.n}</h3>
-                            <p>Professional grade digital asset optimized for performance.</p>
-                            <div class="price-row">
-                                <span class="price">Rs. ${item.p}</span>
-                                <a href="#" onclick="purchase('${item.n}', '${item.p}')" class="cta-btn">Order</a>
-                            </div>
-                        </div>
+        function fill(data, id, icon) {
+            const el = document.getElementById(id);
+            data.forEach(i => {
+                el.innerHTML += `
+                    <div class="card" data-tilt>
+                        <i class="fas ${icon}" style="font-size:30px; color:var(--primary)"></i>
+                        <h3 style="margin-top:15px">${i.n}</h3>
+                        <span class="price">Rs. ${i.p}.00</span>
+                        <a href="#" onclick="buy('${i.n}','${i.p}')" class="buy-now">Order</a>
                     </div>
                 `;
             });
         }
 
-        loadItems(bots, 'bot-grid', 'fa-robot');
-        loadItems(panels, 'panel-grid', 'fa-server');
+        fill(bots, 'bot-grid', 'fa-bug');
+        fill(panels, 'panel-grid', 'fa-microchip');
 
-        // Animations
+        // --- 3. Close Loader ---
         window.onload = () => {
-            gsap.to("#loader", {opacity: 0, duration: 1, onComplete: () => {
-                document.getElementById('loader').style.display = 'none';
-            }});
-            VanillaTilt.init(document.querySelectorAll(".card-wrap"), { max: 10, speed: 1000, glare: true, "max-glare": 0.2 });
+            setTimeout(() => {
+                gsap.to("#loader", {opacity: 0, duration: 1, onComplete: () => {
+                    document.getElementById('loader').style.display = 'none';
+                    VanillaTilt.init(document.querySelectorAll(".card"), { max: 15, speed: 400, glare: true, "max-glare": 0.2 });
+                }});
+            }, 2000);
         };
 
-        function purchase(name, price) {
-            const msg = encodeURIComponent(`Professional Inquiry:\n\nService: ${name}\nRate: Rs. ${price}\n\nPlease provide corporate payment details.`);
+        function buy(name, price) {
+            const msg = encodeURIComponent(`I want to buy: ${name}\nPrice: Rs. ${price}\n\nPlease send details.`);
             window.open(`https://wa.me/message/X45CUX4LO3AQD1?text=${msg}`);
         }
     </script>
