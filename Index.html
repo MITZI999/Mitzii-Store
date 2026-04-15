@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitzii Store | Premium Cyber Tools</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --dark-red: #8b0000;
+            --bg-black: #050505;
+            --card-bg: #0f0f0f;
+            --text-white: #ffffff;
+            --glass: rgba(255, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+
+        /* 3D Preloader */
+        #loader {
+            position: fixed;
+            height: 100vh;
+            width: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .cube-wrapper {
+            width: 100px;
+            height: 100px;
+            perspective: 600px;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 2s infinite linear;
+        }
+
+        .face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--primary-red);
+            background: rgba(255, 0, 0, 0.1);
+            box-shadow: 0 0 20px var(--primary-red);
+        }
+
+        .front  { transform: translateZ(50px); }
+        .back   { transform: rotateY(180deg) translateZ(50px); }
+        .right  { transform: rotateY(90deg) translateZ(50px); }
+        .left   { transform: rotateY(-90deg) translateZ(50px); }
+        .top    { transform: rotateX(90deg) translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+        @keyframes rotate {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Navbar */
+        nav {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--dark-red);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-red);
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: 0.3s;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle, #200000 0%, #000000 100%);
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--dark-red); }
+            to { text-shadow: 0 0 30px var(--primary-red); }
+        }
+
+        .hero p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 30px; }
+
+        /* Product Sections */
+        .container { padding: 50px 8%; }
+
+        .section-title {
+            font-size: 2rem;
+            border-left: 5px solid var(--primary-red);
+            padding-left: 15px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            padding: 25px;
+            border-radius: 15px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-red);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
+        }
+
+        .card i {
+            font-size: 40px;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .card h3 { margin-bottom: 10px; }
+        .price {
+            font-size: 1.5rem;
+            color: var(--primary-red);
+            font-weight: bold;
+            display: block;
+            margin: 15px 0;
+        }
+
+        .buy-btn {
+            background: linear-gradient(45deg, var(--dark-red), var(--primary-red));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .buy-btn:hover {
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* Footer & Contact */
+        footer {
+            background: #0a0a0a;
+            padding: 50px 8%;
+            border-top: 1px solid var(--dark-red);
+            margin-top: 50px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-box h4 {
+            color: var(--primary-red);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .footer-box p, .footer-box a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .social-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btns a {
+            background: #111;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--primary-red);
+            border: 1px solid var(--dark-red);
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .social-btns a:hover {
+            background: var(--primary-red);
+            color: white;
+            transform: rotate(360deg);
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #555;
+            border-top: 1px solid #111;
+            margin-top: 30px;
+        }
+
+        /* Floating Audio Toggle */
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-red);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 10px var(--primary-red);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="cube-wrapper">
+            <div class="cube">
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face right"></div>
+                <div class="face left"></div>
+                <div class="face top"></div>
+                <div class="face bottom"></div>
+            </div>
+        </div>
+        <h2 style="margin-top: 30px; color: red; letter-spacing: 5px;">MITZII LOADING...</h2>
+    </div>
+
+    <nav>
+        <div class="logo">Mitzii Store</div>
+        <div class="nav-links">
+            <a href="#vpn">VPN</a>
+            <a href="#bots">Bug Bots</a>
+            <a href="#panels">Panels</a>
+            <a href="https://t.me/CyberMitzii" target="_blank">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>MITZII STORE</h1>
+        <p>Premium Digital Services & Advanced Cyber Tools</p>
+        <div style="color: #ff0000; font-weight: bold;">Owner: Dev Mitzii</div>
+    </section>
+
+    <div class="container">
+        
+        <h2 class="section-title" id="vpn"><i class="fas fa-shield-alt"></i> Premium VPN</h2>
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-wifi"></i>
+                <h3>100GB VPN</h3>
+                <span class="price">Rs. 300.00</span>
+                <button class="buy-btn" onclick="order('100GB VPN', '300')">Buy Now</button>
+            </div>
+            <div class="card">
+                <i class="fas fa-bolt"></i>
+                <h3>500GB VPN</h3>
+                <span class="price">Rs. 800.00</span>
+                <button class="buy-btn" onclick="order('500GB VPN', '800')">Buy Now</button>
+            </div>
+            <div class="card">
+                <i class="fas fa-infinity"></i>
+                <h3>Unlimited VPN</h3>
+                <span class="price">Rs. 1150.00</span>
+                <button class="buy-btn" onclick="order('Unlimited VPN', '1150')">Buy Now</button>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="bots" style="margin-top: 60px;"><i class="fas fa-robot"></i> Advanced Bug Bots</h2>
+        <div class="grid">
+            <script>
+                const bots = [
+                    {name: "Tredic Bug bot", price: "2300"},
+                    {name: "Ovalium Bug bot", price: "2400"},
+                    {name: "Aphohis Bug bot", price: "2600"},
+                    {name: "Applow Bug bot", price: "2200"},
+                    {name: "Otax Bug bot", price: "2300"},
+                    {name: "Xinso Bug bot", price: "2300"},
+                    {name: "Lakiya Crasher", price: "2600"},
+                    {name: "Tredic Bug apk", price: "2800"},
+                    {name: "Otax Bug Apk", price: "2800"}
+                ];
+                bots.forEach(bot => {
+                    document.write(`
+                        <div class="card">
+                            <i class="fas fa-bug"></i>
+                            <h3>${bot.name}</h3>
+                            <span class="price">Rs. ${bot.price}.00</span>
+                            <button class="buy-btn" onclick="order('${bot.name}', '${bot.price}')">Order Now</button>
+                        </div>
+                    `);
+                });
+            </script>
+        </div>
+
+        <h2 class="section-title" id="panels" style="margin-top: 60px;"><i class="fas fa-server"></i> Pterodactyl Panels</h2>
+        <div class="grid">
+            <script>
+                const panels = [
+                    {name: "Unlimited Panel", price: "450"},
+                    {name: "Admin Panel", price: "1400"},
+                    {name: "Resell Access", price: "2600"},
+                    {name: "Owner Panel", price: "3600"},
+                    {name: "Bug Bot Deploy", price: "450"},
+                    {name: "MD Bot Deploy", price: "400"}
+                ];
+                panels.forEach(p => {
+                    document.write(`
+                        <div class="card">
+                            <i class="fas fa-terminal"></i>
+                            <h3>${p.name}</h3>
+                            <span class="price">Rs. ${p.price}.00</span>
+                            <button class="buy-btn" onclick="order('${p.name}', '${p.price}')">Order Now</button>
+                        </div>
+                    `);
+                });
+            </script>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-box">
+                <h4>About Mitzii Store</h4>
+                <p>Leading provider of automation bots and premium hosting solutions in Sri Lanka.</p>
+                <p>Developed by: <b>Dev Mitzii</b></p>
+            </div>
+            <div class="footer-box">
+                <h4>Quick Links</h4>
+                <a href="#vpn">VPN Services</a>
+                <a href="#bots">Bug Bots</a>
+                <a href="#panels">Hosting Panels</a>
+            </div>
+            <div class="footer-box">
+                <h4>Connect With Us</h4>
+                <div class="social-btns">
+                    <a href="https://wa.me/message/X45CUX4LO3AQD1"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/CyberMitzii"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://whatsapp.com/channel/0029Vb7n81K5a249fI8Y4S2j"><i class="fas fa-hashtag"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 MITZII STORE. All Rights Reserved. | Secured by Dev Mitzii
+        </div>
+    </footer>
+
+    <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+
+    <script>
+        // Loader timeout
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 2000);
+        });
+
+        // Click Sound Function
+        const sound = document.getElementById('clickSound');
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sound.play();
+            });
+        });
+
+        // Order function to WhatsApp & Telegram
+        function order(item, price) {
+            const message = `Hello Dev Mitzii, I want to buy:\n\nProduct: ${item}\nPrice: Rs. ${price}.00\n\nPlease send me payment details.`;
+            const encodedMsg = encodeURIComponent(message);
+            
+            // Show selection box
+            const choice = confirm("Where do you want to contact?\nOK for WhatsApp\nCancel for Telegram");
+            
+            if (choice) {
+                window.open(`https://wa.me/94774554230?text=${encodedMsg}`, '_blank');
+            } else {
+                window.open(`https://t.me/CyberMitzii?text=${encodedMsg}`, '_blank');
+            }
+        }
+
+        // Simple Scroll Animation
+        gsap.from(".card", {
+            scrollTrigger: ".card",
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2
+        });
+    </script>
+</body>
+</html>
